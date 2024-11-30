@@ -18,10 +18,17 @@
             <span>Dashboard</span></a>
     </li>
 
+
     <li class="nav-item {{ Route::is('sop.index') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('sop.index') }}">
             <i class="fas fa-fw fa-table"></i>
             <span>SOP</span></a>
+    </li>
+
+    <li class="nav-item {{ Route::is('bidang.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('bidang.index') }}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Bidang</span></a>
     </li>
 
     <!-- Sidebar Toggler (Sidebar) -->
