@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Responsive Table</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            .table-container {
+                width: 100%;
+                overflow-x: auto; /* Enables horizontal scrolling on small screens */
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
+            .tg {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            .tg td,
+            .tg th {
+                border: 1px solid black;
+                padding: 10px;
+                text-align: left;
+                vertical-align: top;
+                font-size: 14px;
+            }
+
+            thead th {
+                text-align: center;
+            }
+
+            .tg th:nth-child(1) {
+                text-align: left;
+            }
+
+            .tg .center {
+                text-align: center;
+            }
+
+            .tg input {
+                width: 100%;
+
+                padding: 5px;
+                font-size: 14px;
+            }
+
+            .header-content {
+                text-align: center;
+                font-size: 18px;
+                line-height: 1.5;
+                display: flex;
+                flex-direction: column; /* Arrange elements vertically */
+                align-items: center; /* Center elements horizontally */
+            }
+
+            .header-content img {
+                width: 80px;
+                height: auto;
+                margin-bottom: 5px; /* Add space below the logo */
+            }
+
+            /* Add extra space above the SUBBAGIAN input */
+            .header-content input {
+                text-align: center;
+                margin-top: 30px; /* Add 16px spacing above (equivalent to 2 lines) */
+            }
+
+            @media (max-width: 768px) {
+                .tg td,
+                .tg th {
+                    font-size: 12px;
+                    padding: 8px;
+                }
+
+                .tg input {
+                    font-size: 12px;
+                }
+
+                .header-content img {
+                    width: 60px;
+                }
+
+                .header-content {
+                    font-size: 12px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="table-container">
+            <table class="tg">
+                <colgroup>
+                    <col style="width: 50%;" />
+                    <col style="width: 25%;" />
+                    <col style="width: 25%;" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th rowspan="6" class="center">
+                            <div class="header-content">
+                                <img src="IMG/bappeda.png" alt="LOGO" />
+                                <strong>PEMERINTAH KOTA PONTIANAK</strong>
+                                <br />
+                                Badan Perencanaan Pembangunan Daerah
+                                <br />
+                                Sekretariat
+                                <br />
+                                <input
+                                    type="text"
+                                    placeholder="SUBBAGIAN"
+                                    value=""
+                                />
+                            </div>
+                        </th>
+                        <th>No SOP</th>
+                        <th><input type="text" style="border: 0px;" /></th>
+                    </tr>
+                    <tr>
+                        <th>Tgl Pembuatan</th>
+                        <th><input type="text" style="border: 0px;" /></th>
+                    </tr>
+                    <tr>
+                        <th>Tgl Revisi</th>
+                        <th><input type="text" style="border: 0px;" /></th>
+                    </tr>
+                    <tr>
+                        <th>Tgl Aktif</th>
+                        <th><input type="text" style="border: 0px;" /></th>
+                    </tr>
+                    <tr>
+                        <th>Disahkan Oleh</th>
+                        <th><input type="text" style="border: 0px;" /></th>
+                    </tr>
+                    <tr>
+                        <th>Nama SOP</th>
+                        <th><input type="text" style="border: 0px;" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Dasar Hukum:</td>
+                        <td colspan="2">Kualifikasi Pelaksana</td>
+                    </tr>
+                    <tr>
+                        <th><input type="text" style="border: 0px;"/></th>
+                        <td colspan="2"><input type="text" style="border: 0px;"/></td>
+                    </tr>
+                    <tr>
+                        <td>Keterkaitan:</td>
+                        <td colspan="2">Peralatan</td>
+                    </tr>
+                    <tr>
+                        <th><input type="text" style="border: 0px;" /></th>
+                        <td colspan="2"><input type="text" style="border: 0px;"/></td>
+                    </tr>
+                    <tr>
+                        <td>Peringatan:</td>
+                        <td colspan="2">Pencatatan</td>
+                    </tr>
+                    <tr>
+                        <th><input type="text" style="border: 0px;" /></th>
+                        <td colspan="2"><input type="text" style="border: 0px;"/></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
