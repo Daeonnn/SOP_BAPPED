@@ -9,10 +9,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-   <title>@yield('title')</title>
-@include('includes.backend.style')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>@yield('title')</title>
+    @include('includes.backend.style')
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
 
 </head>
@@ -22,7 +22,8 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        @include('includes.backend.sidebar')
+        @include('includes.backend.sidebar', ['bidangs' => $bidangs])
+
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -30,15 +31,15 @@
             <!-- Main Content -->
             <div id="content">
 
-              @include('includes.backend.topbar')
+                @include('includes.backend.topbar')
 
-               @yield('content')
+                @yield('content')
 
             </div>
             <!-- End of Main Content -->
 
             <!-- Footer -->
-           @include("includes.backend.footer")
+            @include('includes.backend.footer')
             <!-- End of Footer -->
 
         </div>
@@ -75,7 +76,7 @@
         </div>
     </div>
 
-   @include('includes.backend.script')
+    @include('includes.backend.script')
 
 </body>
 

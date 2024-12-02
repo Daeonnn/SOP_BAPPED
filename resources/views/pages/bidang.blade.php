@@ -18,7 +18,6 @@
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
                         Tambah Data
                     </button>
-                    {{-- <a href="{{ route('bidang.export') }}" class="btn btn-success">Export to Excel</a> --}}
                 </div>
             </div>
             <div class="card-body">

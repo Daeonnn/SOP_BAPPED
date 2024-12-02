@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class BidangController extends Controller
 {
+
+
     public function index()
     {
         $bidang = Bidang::all(); // Gunakan huruf kecil

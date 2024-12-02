@@ -15,7 +15,9 @@ class CoverSopController extends Controller
 
         return view('pages.cover_sop', compact('sub_bidangList'));
     }
-    
+
+
+
     public function indexPilihSubBidang()
     {
         $sub_bidangList = Sub_Bidang::all();
