@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Sub_Bidang extends Model
 {
-    protected $table = 'bidang';
-    protected $primaryKey = 'id';
-    protected $fillable = [
-        'name',
-    ];
+    use HasFactory;
+
+    protected $table = 'sub_bidang';
+    protected $fillable = ['name', 'bidang_id'];
+
+    public function bidang()
+    {
+        return $this->belongsTo(Bidang::class, 'bidang_id');
+    }
 }

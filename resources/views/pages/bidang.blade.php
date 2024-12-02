@@ -105,6 +105,10 @@
                             <label for="name" class="form-label">Nama</label>
                             <input type="text" class="form-control" name="name" placeholder="Masukkan Nama bidang" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nama</label>
+                            <input type="text" class="form-control" name="name" placeholder="Masukkan Nama bidang" required>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
