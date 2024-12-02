@@ -11,4 +11,8 @@ class Bidang extends Model
     protected $fillable = [
         'name',
     ];
+    public function subBidangs()
+    {
+        return $this->hasMany(Sub_Bidang::class, 'bidang_id');
+    }
 }

@@ -14,6 +14,7 @@ class BidangController extends Controller
         return view('pages.bidang', compact('bidang')); // Konsisten dengan nama variabel
     }
 
+
     public function store(Request $request)
     {
         $request->validate([

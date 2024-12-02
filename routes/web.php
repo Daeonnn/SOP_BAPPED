@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BidangController;
+use App\Http\Controllers\CoverSopController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SOPController;
 use App\Http\Controllers\SubBidangController;
@@ -36,5 +37,11 @@ Route::get('/sub_bidang', [SubBidangController::class, 'index'])->name('sub_bida
 Route::post('/sub_bidang', [SubBidangController::class, 'store'])->name('sub_bidang.store');
 Route::put('/sub_bidang/update/{id}', [SubBidangController::class, 'update'])->name('sub_bidang.update');
 Route::delete('/sub_bidang/delete/{id}', [SubBidangController::class, 'destroy'])->name('sub_bidang.destroy');
+
+Route::get('/cover_sop', [CoverSopController::class, 'index'])->name('cover_sop.index');
+Route::post('/cover_sop/store', [CoverSopController::class, 'store'])->name('cover_sop.store');
+
+Route::get('/pilih-sub-bidang', [CoverSopController::class, 'indexPilihSubBidang'])->name('pilih_sub_bidang.index');
+Route::post('/submit-sop', [CoverSopController::class, 'submitSop'])->name('sop.form');
 
 require __DIR__.'/auth.php';
