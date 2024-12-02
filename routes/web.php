@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BidangController;
+use App\Http\Controllers\BidangSOPController;
 use App\Http\Controllers\CoverSopController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SOPController;
@@ -28,10 +29,10 @@ Route::post('/sops/{id}', [SopController::class, 'update'])->name('sops.update')
 Route::delete('/sops/{id}', [SopController::class, 'destroy'])->name('sops.destroy');
 Route::get('sop/export', [SopController::class, 'export'])->name('sops.export');
 
-Route::get('/bidang', [BidangController::class, 'index'])->name('bidang.index');
-Route::post('/bidang', [BidangController::class, 'store'])->name('bidang.store');
-Route::put('/bidang/update/{id}', [BidangController::class, 'update'])->name('bidang.update');
-Route::delete('/bidang/delete/{id}', [BidangController::class, 'destroy'])->name('bidang.destroy');
+Route::get('/pengaturan/bidang', [BidangController::class, 'index'])->name('setting_bidang.index');
+Route::post('/pengaturan/bidang', [BidangController::class, 'store'])->name('setting_bidang.store');
+Route::put('/pengaturan/bidang/update/{id}', [BidangController::class, 'update'])->name('setting_bidang.update');
+Route::delete('/pengaturan/bidang/delete/{id}', [BidangController::class, 'destroy'])->name('setting_bidang.destroy');
 
 Route::get('/sub_bidang', [SubBidangController::class, 'index'])->name('sub_bidang.index');
 Route::post('/sub_bidang', [SubBidangController::class, 'store'])->name('sub_bidang.store');
@@ -43,5 +44,7 @@ Route::post('/cover_sop/store', [CoverSopController::class, 'store'])->name('cov
 
 Route::get('/pilih-sub-bidang', [CoverSopController::class, 'indexPilihSubBidang'])->name('pilih_sub_bidang.index');
 Route::post('/submit-sop', [CoverSopController::class, 'submitSop'])->name('sop.form');
+
+Route::get('/bidang/{id}', [BidangSOPController::class, 'index'])->name('bidang.index');
 
 require __DIR__.'/auth.php';

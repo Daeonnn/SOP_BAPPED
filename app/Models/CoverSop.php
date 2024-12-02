@@ -25,4 +25,9 @@ class CoverSop extends Model
         'pencatatan',
         'sub_bidang_id',
     ];
+
+    public function subBidang()
+    {
+        return $this->belongsTo(Sub_Bidang::class, 'sub_bidang_id');
+    }
 }

@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $bidangs = Bidang::with('subBidangs')->get();
-    view()->share('bidangs', $bidangs);
+
+        view()->share('bidangs', $bidangs);
     }
 }

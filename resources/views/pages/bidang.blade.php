@@ -47,7 +47,7 @@
                                     </button>
 
                                     <!-- Tombol Hapus -->
-                                    <form action="{{ route('bidang.destroy', $bidang->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('setting_bidang.destroy', $bidang->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus bidang ini?')">Hapus</button>
@@ -63,7 +63,7 @@
                                             <h5 class="modal-title" id="editModalLabel{{ $bidang->id }}">Edit bidang</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <form action="{{ route('bidang.update', $bidang->id) }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('setting_bidang.update', $bidang->id) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             @method('POST')
                                             <div class="modal-body">
@@ -97,7 +97,7 @@
                     <h5 class="modal-title" id="addModalLabel">Tambah Data bidang</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('bidang.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('setting_bidang.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
