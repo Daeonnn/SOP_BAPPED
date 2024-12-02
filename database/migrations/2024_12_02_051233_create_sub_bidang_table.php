@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('sub_bidang', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('bidang_id');
             $table->timestamps();
+            $table->foreign('bidang_id')->references('id')->on('bidang')->onDelete('cascade');
         });
     }
 
