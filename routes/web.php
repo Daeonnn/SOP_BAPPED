@@ -3,6 +3,7 @@
 use App\Http\Controllers\BidangController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SOPController;
+use App\Http\Controllers\SubBidangController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,5 +31,10 @@ Route::get('/bidang', [BidangController::class, 'index'])->name('bidang.index');
 Route::post('/bidang', [BidangController::class, 'store'])->name('bidang.store');
 Route::put('/bidang/update/{id}', [BidangController::class, 'update'])->name('bidang.update');
 Route::delete('/bidang/delete/{id}', [BidangController::class, 'destroy'])->name('bidang.destroy');
+
+Route::get('/sub_bidang', [SubBidangController::class, 'index'])->name('sub_bidang.index');
+Route::post('/sub_bidang', [SubBidangController::class, 'store'])->name('sub_bidang.store');
+Route::put('/sub_bidang/update/{id}', [SubBidangController::class, 'update'])->name('sub_bidang.update');
+Route::delete('/sub_bidang/delete/{id}', [SubBidangController::class, 'destroy'])->name('sub_bidang.destroy');
 
 require __DIR__.'/auth.php';

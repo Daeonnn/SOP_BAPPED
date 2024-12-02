@@ -31,6 +31,12 @@
             <span>Bidang</span></a>
     </li>
 
+    <li class="nav-item {{ Route::is('sub_bidang.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('sub_bidang.index') }}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Sub Bidang</span></a>
+    </li>
+
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
