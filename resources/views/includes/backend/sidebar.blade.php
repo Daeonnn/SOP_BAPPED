@@ -30,11 +30,15 @@
             <i class="fas fa-fw fa-cog"></i>
             <span>Pengaturan Bidang</span>
         </a>
-        <div id="collapseThree" class="collapse {{ Route::is('setting_bidang.index') || Route::is('sub_bidang.index') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseThree"
+            class="collapse {{ Route::is('setting_bidang.index') || Route::is('sub_bidang.index') ? 'show' : '' }}"
+            aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Pilih:</h6>
-                <a class="collapse-item {{ Route::is('setting_bidang.index') ? 'active' : '' }}" href="{{ route('setting_bidang.index') }}">Bidang</a>
-                <a class="collapse-item {{ Route::is('sub_bidang.index') ? 'active' : '' }}" href="{{ route('sub_bidang.index') }}">Sub
+                <a class="collapse-item {{ Route::is('setting_bidang.index') ? 'active' : '' }}"
+                    href="{{ route('setting_bidang.index') }}">Bidang</a>
+                <a class="collapse-item {{ Route::is('sub_bidang.index') ? 'active' : '' }}"
+                    href="{{ route('sub_bidang.index') }}">Sub
                     Bidang</a>
             </div>
         </div>
@@ -46,11 +50,13 @@
             <i class="fas fa-fw fa-file-alt"></i>
             <span>Bidang</span>
         </a>
-        <div id="collapseTwo" class="collapse {{ request()->is('bidang/*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseTwo" class="collapse {{ request()->is('bidang/*') ? 'show' : '' }}"
+            aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Pilih Bidang:</h6>
                 @foreach ($bidangs as $bidang)
-                    <a class="collapse-item {{ request()->is('bidang/'.$bidang->id) ? 'active' : '' }}" href="{{ route('bidang.index', ['id' => $bidang->id]) }}">
+                    <a class="collapse-item {{ request()->is('bidang/' . $bidang->id) ? 'active' : '' }}"
+                        href="{{ route('bidang.index', ['id' => $bidang->id]) }}">
                         {{ $bidang->name }}
                     </a>
                 @endforeach

@@ -13,9 +13,9 @@
                 <h6 class="m-0 font-weight-bold text-primary">Data SOP Bidang {{ $bidang->name }}</h6>
                 <div class="mt-3">
                     <!-- Tombol Tambah Data -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <a href="{{ route('bidang.create', ['id' => $bidang->id]) }}" class="btn btn-primary">
                         Tambah SOP
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="card-body">

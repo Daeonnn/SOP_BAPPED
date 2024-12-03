@@ -45,6 +45,10 @@ Route::post('/cover_sop/store', [CoverSopController::class, 'store'])->name('cov
 Route::get('/pilih-sub-bidang', [CoverSopController::class, 'indexPilihSubBidang'])->name('pilih_sub_bidang.index');
 Route::post('/submit-sop', [CoverSopController::class, 'submitSop'])->name('sop.form');
 
+
 Route::get('/bidang/{id}', [BidangSOPController::class, 'index'])->name('bidang.index');
+Route::get('/bidang/create/{id}', [BidangSOPController::class, 'create'])->name('bidang.create');
+
+
 
 require __DIR__.'/auth.php';

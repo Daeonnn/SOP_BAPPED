@@ -18,9 +18,9 @@ return new class extends Migration
             $table->text('keterkaitan');
             $table->text('peringatan');
             $table->string('no_sop');
-            $table->date('tgl_pembuatan');
-            $table->date('tgl_revisi');
-            $table->date('tgl_aktif');
+            $table->string('tgl_pembuatan');
+            $table->string('tgl_revisi');
+            $table->string('tgl_aktif');
             $table->text('kualifikasi_pelaksana');
             $table->text('perlengkapan');
             $table->text('pencatatan');

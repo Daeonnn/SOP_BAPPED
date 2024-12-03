@@ -110,9 +110,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Data bidang</h6>
             </div>
             <div class="card-body">
-                <div class="table-container">
-                    <form action="{{ route('cover_sop.store') }}" method="POST">
-                        @if ($errors->any())
+                @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -121,7 +119,11 @@
                                 </ul>
                             </div>
                         @endif
+                <div class="table-container">
+                    <form action="{{ route('cover_sop.store') }}" method="POST">
+
                         @csrf
+
                         <table class="tg">
                             <colgroup>
                                 <col style="width: 50%;" />
@@ -290,9 +292,7 @@
                                 </tr>
                             </tbody>
                         </table>
-
-
-                        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                        <button id="submit" type="submit" class="btn btn-primary mt-2" style="display: none">Submit</button>
                     </form>
                     <button id="previewButton" class="btn btn-success mt-2">Preview</button>
                 </div>
@@ -418,6 +418,7 @@
 
             // Show the preview table container
             document.getElementById('previewTableContainer').style.display = 'block';
+            document.getElementById('submit').style.display = 'block';
         });
     </script>
 

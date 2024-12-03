@@ -5,6 +5,7 @@ use Illuminate\View\View;
 use App\Models\Sop;
 use Illuminate\Http\Request;
 use App\Exports\SopExport;
+use App\Models\Sub_Bidang;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SOPController extends Controller
@@ -22,6 +23,7 @@ class SOPController extends Controller
         $sop->delete();
         return redirect()->route('sop.index')->with('success', 'SOP berhasil dihapus.');
     }
+
 
 
     public function store(Request $request)
