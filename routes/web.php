@@ -3,6 +3,7 @@
 use App\Http\Controllers\BidangController;
 use App\Http\Controllers\BidangSOPController;
 use App\Http\Controllers\CoverSopController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SOPController;
 use App\Http\Controllers\SubBidangController;
@@ -41,6 +42,11 @@ Route::delete('/sub_bidang/delete/{id}', [SubBidangController::class, 'destroy']
 
 Route::get('/cover_sop', [CoverSopController::class, 'index'])->name('cover_sop.index');
 Route::post('/cover_sop/store', [CoverSopController::class, 'store'])->name('cover_sop.store');
+Route::get('/cover_sop/edit/{sop_id}', [CoverSopController::class, 'edit'])->name('cover_sop.edit');
+Route::put('/cover_sop/update/{id}', [CoverSopController::class, 'update'])->name('cover_sop.update');
+
+
+
 
 Route::get('/pilih-sub-bidang', [CoverSopController::class, 'indexPilihSubBidang'])->name('pilih_sub_bidang.index');
 Route::post('/submit-sop', [CoverSopController::class, 'submitSop'])->name('sop.form');

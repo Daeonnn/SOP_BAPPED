@@ -12,27 +12,32 @@ class BidangSOPController extends Controller
 {
     public function index($id)
     {
-        Log::info('Bidang ID: ' . $id);
         $bidang = Bidang::findOrFail($id);
 
-        $sops = CoverSop::whereHas('subBidang', function ($query) use ($id) {
-            $query->where('bidang_id', $id);
-        })->get();
+        // Ambil subBidang yang terkait dengan Bidang ini
+        $subBidangList = $bidang->subBidangs;
 
-        // Tampilkan data ke view
-        return view('pages.bidang.index', compact('bidang', 'sops'));
+        // Ambil SOP yang terkait dengan Bidang ini, hanya berdasarkan bidang_id
+        $sops = CoverSop::where('bidang_id', $id)->get();
+
+        return view('pages.bidang.index', compact('bidang', 'sops', 'subBidangList'));
     }
 
-    public function create($id)
+
+
+    public function create($sop_id)
     {
-        // Mendapatkan data bidang berdasarkan id
-        $bidang = Bidang::findOrFail($id);
+        // Load SOP with its associated subBidang and bidang (if available)
+        $sop = CoverSop::with('subBidang.bidang')->findOrFail($sop_id);
 
-        // Mendapatkan data subBidang terkait
-        $subBidangs = Sub_Bidang::where('bidang_id', $id)->get();
+        // Ensure subBidang and bidang are available
+        $subBidang = $sop->subBidang; // Get the sub-bidang if it exists
+        $bidang = null;
 
-        // Tampilkan form tambah SOP
-        return view('pages.bidang.create', compact('bidang', 'subBidangs'));
+        if ($subBidang) {
+            $bidang = $subBidang->bidang; // If subBidang exists, get bidang
+        }
+
+        return view('pages.cover_sop', compact('sop', 'subBidang', 'bidang')); // Send data to view
     }
 }
-

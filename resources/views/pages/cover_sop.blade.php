@@ -111,18 +111,19 @@
             </div>
             <div class="card-body">
                 @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="table-container">
-                    <form action="{{ route('cover_sop.store') }}" method="POST">
+                    <form action="{{ route('cover_sop.update', ['id' => $sop->id]) }}" method="POST">
 
                         @csrf
+                        @method('PUT')
 
                         <table class="tg">
                             <colgroup>
@@ -138,54 +139,60 @@
                                             <strong>PEMERINTAH KOTA PONTIANAK</strong>
                                             Badan Perencanaan Pembangunan Daerah
                                             <div style="margin-bottom: 50px; text-transform: uppercase;">
-                                                {{ $subBidang->bidang->name }}
+                                                {{ $bidang->name ?? 'Bidang tidak tersedia' }}
                                             </div>
                                             <div>
-                                                Subbag {{ $subBidang->name }}
-                                                <input type="hidden" name="sub_bidang_id" value="{{ $subBidang->bidang->id }}">
+                                                {{ $subBidang ? 'Subbag ' . $subBidang->name : '' }}
+                                                {{-- <input type="hidden" name="sub_bidang_id" value="{{ $subBidang->id ?? '' }}"> --}}
                                             </div>
                                         </div>
                                     </th>
                                     <th>No SOP</th>
-                                    <th><input type="text" name="no_sop"
+                                    <th><input type="text" name="no_sop" value="{{ $sop->no_sop }}"
                                             style="border: 0px; outline: none; padding: 0" /></th>
                                 </tr>
                                 <tr>
                                     <th>Tgl Pembuatan</th>
-                                    <th><input type="text" name="tgl_pembuatan"
+                                    <th><input type="text" name="tgl_pembuatan" value="{{ $sop->tgl_pembuatan ?? '' }}"
                                             style="border: 0px; outline: none; padding: 0" /></th>
                                 </tr>
                                 <tr>
                                     <th>Tgl Revisi</th>
-                                    <th><input type="text" name="tgl_revisi"
+                                    <th><input type="text" name="tgl_revisi" value="{{ $sop->tgl_revisi ?? '' }}"
                                             style="border: 0px; outline: none; padding: 0" /></th>
                                 </tr>
                                 <tr>
                                     <th>Tgl Aktif</th>
-                                    <th><input type="text" name="tgl_aktif"
+                                    <th><input type="text" name="tgl_aktif" value="{{ $sop->tgl_aktif ?? '' }}"
                                             style="border: 0px; outline: none; padding: 0" /></th>
                                 </tr>
                                 <tr>
                                     <th>Disahkan Oleh</th>
-                                    <th style="height: 100px">
-                                        <textarea
-                                            style="
-                                            border: 0;
-                                            resize: none;
-                                            overflow: hidden;
-                                            width: 100%;
-                                            height: 100%;
-                                            font-family: inherit;
-                                            font-size: inherit;
-                                            margin: 0;
-                                            outline: none;"
-                                            name="disahkan_oleh"></textarea>
+                                    <th style="height: 150px; vertical-align: top; padding-bottom: 10px">
+                                        <div>
+                                            <div>
+                                                Ketua MUI Hizbullah
+                                            </div>
+                                            <div>
+                                                <img style="height: 80px" src="{{ asset('img/ttd.png') }}" alt="">
+                                            </div>
+                                            <div style="text-decoration: underline;">
+                                                Doni Hasan Nasarallah
+                                            </div>
+                                            <div>
+                                                NIP: 123456789
+                                            </div>
+                                            <div>
+                                                Sekretaris Pembina IV/A
+                                            </div>
+                                        </div>
                                     </th>
+
                                 </tr>
                                 <tr>
                                     <th style="padding-bottom: 20px;">Nama SOP</th>
-                                    <th><input type="text" style="border: 0px; outline: none; padding: 0"
-                                            name="nama_sop" /></th>
+                                    <th><input type="text" style="border: 0px; outline: none; padding: 0" name="nama_sop"
+                                            value="{{ $sop->name ?? '' }}" /></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -206,7 +213,7 @@
                                         font-size: inherit;
                                         margin: 0;
                                         outline: none;"
-                                            oninput="adjustHeightDasarHukum(this)" name="dasar_hukum"></textarea>
+                                            oninput="adjustHeightDasarHukum(this)" name="dasar_hukum">{{ $sop->dasar_hukum ?? '' }}</textarea>
                                     </th>
                                     <td colspan="2">
                                         <textarea
@@ -220,12 +227,12 @@
                                         font-size: inherit;
                                         margin: 0;
                                         outline: none;"
-                                            oninput="adjustHeightKualifikasiPelaksana(this)" name="kualifikasi_pelaksana"></textarea>
+                                            oninput="adjustHeightKualifikasiPelaksana(this)" name="kualifikasi_pelaksana">{{ $sop->kualifikasi_pelaksana ?? '' }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Keterkaitan:</td>
-                                    <td colspan="2">Peralatan</td>
+                                    <td colspan="2">Perlengkapan</td>
                                 </tr>
                                 <tr>
                                     <th>
@@ -239,7 +246,7 @@
                                         font-size: inherit;
                                         margin: 0;
                                         outline: none;"
-                                            oninput="adjustHeightKeterkaitan(this)" name="keterkaitan"></textarea>
+                                            oninput="adjustHeightKeterkaitan(this)" name="keterkaitan">{{ $sop->keterkaitan ?? '' }}</textarea>
                                     </th>
                                     <td colspan="2">
                                         <textarea
@@ -253,7 +260,7 @@
                                         font-size: inherit;
                                         margin: 0;
                                         outline: none;"
-                                            oninput="adjustHeightPeralatan(this)" name="peralatan"></textarea>
+                                            oninput="adjustHeightperlengkapan(this)" name="perlengkapan">{{ $sop->perlengkapan ?? '' }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -273,7 +280,7 @@
                                         font-size: inherit;
                                         margin: 0;
                                         outline: none;"
-                                            oninput="adjustHeightPeringatan(this)" name="peringatan"></textarea>
+                                            oninput="adjustHeightPeringatan(this)" name="peringatan">{{ $sop->peringatan ?? '' }}</textarea>
                                     </th>
                                     <td colspan="2">
                                         <textarea
@@ -287,19 +294,22 @@
                                         font-size: inherit;
                                         margin: 0;
                                         outline: none;"
-                                            oninput="adjustHeightPencatatan(this)" name="pencatatan"></textarea>
+                                            oninput="adjustHeightPencatatan(this)" name="pencatatan">{{ $sop->pencatatan ?? '' }}</textarea>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <button id="submit" type="submit" class="btn btn-primary mt-2" style="display: none">Submit</button>
+                        <button id="submit" type="submit" class="btn btn-primary mt-2"
+                            style="display: none">Submit</button>
+
+
+
                     </form>
                     <button id="previewButton" class="btn btn-success mt-2">Preview</button>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="container-fluid" id="previewTableContainer" style="display: none;">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -321,11 +331,10 @@
                                         <strong>PEMERINTAH KOTA PONTIANAK</strong>
                                         Badan Perencanaan Pembangunan Daerah
                                         <div style="margin-bottom: 50px; text-transform: uppercase;">
-                                            {{ $subBidang->bidang->name }}
+                                            {{ $bidang->name ?? 'Bidang tidak tersedia' }}
                                         </div>
                                         <div>
-                                            Subbag {{ $subBidang->name }}
-                                            <input type="hidden" name="bidang_id" value="{{ $subBidang->bidang->id }}">
+                                            {{ $subBidang ? 'Subbag ' . $subBidang->name : '' }}
                                         </div>
                                     </div>
                                 </th>
@@ -346,7 +355,25 @@
                             </tr>
                             <tr>
                                 <th>Disahkan Oleh</th>
-                                <th id="previewDisahkanOleh" style="height: 100px;"></th>
+                                <th style="height: 150px; vertical-align: top; padding-bottom: 10px">
+                                    <div>
+                                        <div>
+                                            Ketua MUI Hizbullah
+                                        </div>
+                                        <div>
+                                            <img style="height: 100px" src="{{ asset('img/ttd.png') }}" alt="">
+                                        </div>
+                                        <div style="text-decoration: underline;">
+                                            Doni Hasan Nasarallah
+                                        </div>
+                                        <div>
+                                            NIP: 123456789
+                                        </div>
+                                        <div>
+                                            Sekretaris Pembina IV/A
+                                        </div>
+                                    </div>
+                                </th>
                             </tr>
                             <tr>
                                 <th>Nama SOP</th>
@@ -365,11 +392,11 @@
                             </tr>
                             <tr>
                                 <td>Keterkaitan:</td>
-                                <td colspan="2">Peralatan</td>
+                                <td colspan="2">Perlengkapan</td>
                             </tr>
                             <tr>
                                 <th id="previewKeterkaitan" style="height: 100px"></th>
-                                <td colspan="2" id="previewPeralatan"></td>
+                                <td colspan="2" id="previewperlengkapan"></td>
                             </tr>
                             <tr>
                                 <td>Peringatan:</td>
@@ -381,11 +408,12 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <a href="" class="btn btn-primary mt-2">Generate PDF</a>
                 </div>
             </div>
         </div>
     </div>
-
     <script>
         document.getElementById('previewButton').addEventListener('click', function() {
             // Get values from form
@@ -393,12 +421,11 @@
             const tglPembuatan = document.querySelector('input[name="tgl_pembuatan"]').value;
             const tglRevisi = document.querySelector('input[name="tgl_revisi"]').value;
             const tglAktif = document.querySelector('input[name="tgl_aktif"]').value;
-            const disahkanOleh = document.querySelector('textarea[name="disahkan_oleh"]').value;
             const namaSop = document.querySelector('input[name="nama_sop"]').value;
             const dasarHukum = document.querySelector('textarea[name="dasar_hukum"]').value;
             const kualifikasiPelaksana = document.querySelector('textarea[name="kualifikasi_pelaksana"]').value;
             const keterkaitan = document.querySelector('textarea[name="keterkaitan"]').value;
-            const peralatan = document.querySelector('textarea[name="peralatan"]').value;
+            const perlengkapan = document.querySelector('textarea[name="perlengkapan"]').value;
             const peringatan = document.querySelector('textarea[name="peringatan"]').value;
             const pencatatan = document.querySelector('textarea[name="pencatatan"]').value;
 
@@ -407,12 +434,11 @@
             document.getElementById('previewTglPembuatan').innerText = tglPembuatan;
             document.getElementById('previewTglRevisi').innerText = tglRevisi;
             document.getElementById('previewTglAktif').innerText = tglAktif;
-            document.getElementById('previewDisahkanOleh').innerText = disahkanOleh;
             document.getElementById('previewNamaSop').innerText = namaSop;
             document.getElementById('previewDasarHukum').innerText = dasarHukum;
             document.getElementById('previewKualifikasiPelaksana').innerText = kualifikasiPelaksana;
             document.getElementById('previewKeterkaitan').innerText = keterkaitan;
-            document.getElementById('previewPeralatan').innerText = peralatan;
+            document.getElementById('previewperlengkapan').innerText = perlengkapan;
             document.getElementById('previewPeringatan').innerText = peringatan;
             document.getElementById('previewPencatatan').innerText = pencatatan;
 
@@ -421,6 +447,8 @@
             document.getElementById('submit').style.display = 'block';
         });
     </script>
+
+
 
     <script>
         function adjustHeightDasarHukum(element) {
@@ -443,7 +471,7 @@
             element.style.height = element.scrollHeight + "px"; // Set height to the content
         }
 
-        function adjustHeightPeralatan(element) {
+        function adjustHeightperlengkapan(element) {
             element.style.height = "auto"; // Reset height to auto to calculate scrollHeight
             element.style.height = element.scrollHeight + "px"; // Set height to the content
         }
@@ -453,5 +481,8 @@
             element.style.height = element.scrollHeight + "px"; // Set height to the content
         }
     </script>
+
+
+
 
 @endsection

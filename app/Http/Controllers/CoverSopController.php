@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bidang;
 use App\Models\CoverSop;
+use App\Models\Pelaksana;
+use App\Models\Sop;
 use App\Models\Sub_Bidang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CoverSopController extends Controller
 {
@@ -15,6 +19,8 @@ class CoverSopController extends Controller
 
         return view('pages.cover_sop', compact('subBidang', 'subBidangList'));
     }
+
+
 
 
     public function indexPilihSubBidang()
@@ -46,45 +52,98 @@ class CoverSopController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi data yang diterima
+        // Debugging: Tampilkan data request untuk memastikan bidang_id ada
+        Log::info('Bidang ID yang diterima: ' . $request->bidang_id);
+
+        // Validasi input
         $request->validate([
-            'no_sop' => 'required|string|max:255',
-            'tgl_pembuatan' => 'required|string|max:255',
-            'tgl_revisi' => 'nullable|string|max:255',
-            'tgl_aktif' => 'required|string|max:255',
-            'disahkan_oleh' => 'nullable|string',
-            'nama_sop' => 'required|string|max:255',
-            'dasar_hukum' => 'nullable|string',
-            'kualifikasi_pelaksana' => 'nullable|string',
-            'keterkaitan' => 'nullable|string',
-            'peralatan' => 'nullable|string',
-            'peringatan' => 'nullable|string',
-            'pencatatan' => 'nullable|string',
-            'sub_bidang_id' => 'required|integer|exists:sub_bidang,id', // Pastikan ID bidang ada dalam tabel terkait
+            'no_sop' => 'required|string',
+            'nama_sop' => 'required|string',
+            'tgl_pembuatan' => 'required|date',
+            'pelaksana' => 'nullable|array',
+            'pelaksana.*' => 'nullable|string',
+            'sub_bidang_id' => 'nullable|exists:sub_bidang,id', // Validasi sub_bidang_id jika ada
         ]);
 
-        try {
-            // Menyimpan data ke dalam tabel SOP
-            $sop = new CoverSop();
-            $sop->name = $request->nama_sop;
-            $sop->dasar_hukum = $request->dasar_hukum;
-            $sop->keterkaitan = $request->keterkaitan;
-            $sop->peringatan = $request->peringatan;
-            $sop->no_sop = $request->no_sop;
-            $sop->tgl_pembuatan = $request->tgl_pembuatan;
-            $sop->tgl_revisi = $request->tgl_revisi;
-            $sop->tgl_aktif = $request->tgl_aktif;
-            $sop->kualifikasi_pelaksana = $request->kualifikasi_pelaksana;
-            $sop->perlengkapan = $request->peralatan;
-            $sop->pencatatan = $request->pencatatan;
-            $sop->sub_bidang_id = $request->sub_bidang_id; // Pastikan ID sub_bidang valid
-            $sop->save();
+        // Ambil bidang dan sub_bidang dari request
+        $bidangId = $request->bidang_id;  // Ambil bidang_id yang diterima
+        $subBidangId = $request->sub_bidang_id; // Ambil sub_bidang_id yang diterima
 
-            // Redirect atau mengembalikan response setelah berhasil menyimpan
-            return redirect()->route('cover_sop.index')->with('success', 'Data SOP berhasil disimpan!');
-        } catch (\Exception $e) {
-            // Menangkap error dan mengembalikan response dengan pesan error
-            return redirect()->route('cover_sop.index')->with('error', 'Terjadi kesalahan saat menyimpan data SOP. Silakan coba lagi.');
+        // Debugging: Pastikan nilai bidang_id dan sub_bidang_id terambil dengan benar
+        Log::info('Bidang ID: ' . $bidangId);
+        Log::info('Sub Bidang ID: ' . $subBidangId);
+
+        // Pastikan sub_bidang_id terpilih jika ada
+        if ($subBidangId) {
+            $subBidang = Sub_Bidang::find($subBidangId);
+            if (!$subBidang || $subBidang->bidang_id != $bidangId) {
+                return redirect()->back()->withErrors(['sub_bidang_id' => 'Sub Bidang tidak valid untuk Bidang ini.']);
+            }
         }
+
+        // Simpan data ke tabel cover_sop
+        $coverSop = CoverSop::create([
+            'name' => $request->nama_sop,
+            'no_sop' => $request->no_sop,
+            'tgl_pembuatan' => $request->tgl_pembuatan,
+            'bidang_id' => $bidangId,  // Pastikan bidang_id disertakan
+            'sub_bidang_id' => $subBidangId,
+            'status' => 'Perlu Dilengkapi',
+        ]);
+
+        // Simpan data pelaksana jika ada
+        if ($request->pelaksana) {
+            foreach ($request->pelaksana as $pelaksanaName) {
+                if (!empty($pelaksanaName)) {
+                    Pelaksana::create([
+                        'name' => $pelaksanaName,
+                        'cover_sop_id' => $coverSop->id,
+                    ]);
+                }
+            }
+        }
+
+        // Redirect ke halaman yang sesuai
+        return redirect()->route('bidang.index', ['id' => $bidangId])
+            ->with('success', 'Data SOP berhasil ditambahkan!');
+    }
+
+    // Edit method to show the form
+    public function edit($id)
+    {
+        $sop = CoverSop::findOrFail($id);
+        $bidang = Bidang::find($sop->bidang_id);  // Assuming this relationship exists
+        $subBidang = Sub_Bidang::find($sop->sub_bidang_id); // Assuming this relationship exists
+        return view('pages.cover_sop', compact('sop', 'bidang', 'subBidang'));
+    }
+
+    // Update method to handle form submission
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'no_sop' => 'required',
+            'tgl_pembuatan' => 'required',
+            'tgl_revisi' => 'nullable',
+            'tgl_aktif' => 'nullable',
+            'nama_sop' => 'required',
+            'dasar_hukum' => 'required',
+            'kualifikasi_pelaksana' => 'required',
+            'keterkaitan' => 'required',
+            'perlengkapan' => 'required',
+            'peringatan' => 'required',
+            'pencatatan' => 'required',
+        ]);
+
+        // Temukan SOP berdasarkan ID
+        $sop = CoverSop::findOrFail($id);
+
+        // Set status menjadi 'Menunggu' sebelum update
+        $sop->status = 'Menunggu';
+
+        // Update data SOP
+        $sop->update($request->all());
+
+        // Redirect ke halaman edit dengan pesan sukses
+        return redirect()->route('cover_sop.edit', $id)->with('success', 'SOP updated successfully');
     }
 }

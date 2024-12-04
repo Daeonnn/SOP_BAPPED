@@ -14,6 +14,12 @@ class Sub_Bidang extends Model
 
     public function bidang()
     {
-        return $this->belongsTo(Bidang::class, 'bidang_id');
+        return $this->belongsTo(Bidang::class);
     }
+
+    public function coverSops()
+{
+    return $this->hasMany(CoverSop::class);
+}
+
 }

@@ -18,10 +18,8 @@ return new class extends Migration
             $table->string('waktu');
             $table->string('output');
             $table->string('keterangan');
-            $table->unsignedBigInteger('pelaksana_id');
             $table->timestamps();
 
-            $table->foreign('pelaksana_id')->references('id')->on('pelaksana')->onDelete('cascade');
         });
     }
 

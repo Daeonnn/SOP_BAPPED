@@ -24,10 +24,24 @@ class CoverSop extends Model
         'perlengkapan',
         'pencatatan',
         'sub_bidang_id',
+        'bidang_id',
     ];
 
-    public function subBidang()
+    // In CoverSop model
+public function subBidang()
+{
+    return $this->belongsTo(Sub_Bidang::class);  // Assuming a CoverSop belongs to a SubBidang
+}
+
+
+    public function bidang()
     {
-        return $this->belongsTo(Sub_Bidang::class, 'sub_bidang_id');
+        return $this->belongsTo(Bidang::class);
+    }
+
+
+    public function pelaksana()
+    {
+        return $this->hasMany(Pelaksana::class);
     }
 }
