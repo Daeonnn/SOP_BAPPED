@@ -48,16 +48,67 @@
             width: 30px;
             height: 30px;
         }
+
+        .flowchart-info {
+    display: flex; /* Susun elemen secara horizontal */
+    justify-content: start; /* Rata kiri */
+    gap: 5px; /* Jarak antar item */
+    margin-bottom: 20px;
+}
+
+.flowchart-item {
+    display: flex;
+    align-items: center; /* Pusatkan vertikal */
+    flex-direction: row; /* Pastikan elemen tersusun horizontal */
+    gap: 5px; /* Jarak antara ikon dan teks */
+    position: relative; /* Dibutuhkan untuk garis vertikal */
+    padding-right: 20px; /* Tambahkan jarak ke kanan */
+}
+
+.flowchart-item:not(:last-child)::after {
+    content: "|"; /* Garis vertikal */
+    position: absolute;
+    right: 5px; /* Jarak garis dari item */
+    top: 50%; /* Pusatkan vertikal */
+    transform: translateY(-50%);
+    color: #000; /* Warna garis */
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.flowchart-item span {
+    font-weight: bold;
+    color: #333;
+}
+
+.flowchart-item i {
+    margin-right: 1px; /* Jarak antara ikon dan teks */
+    font-size: 24px; /* Ukuran ikon */
+}
+
     </style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 
     <div class="container-fluid">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h3 class="m-0 font-weight-bold text-primary">Bentuk Flowchart</h3>
-                <div class="status-images">
-                    <img src="https://via.placeholder.com/30" alt="Mulai/Selesai" class="status-image" title="Mulai/Selesai">
-                    <img src="https://via.placeholder.com/30" alt="Proses" class="status-image" title="Proses">
-                    <img src="https://via.placeholder.com/30" alt="Pilihan" class="status-image" title="Pilihan">
+                <div class="card-body">
+                    <div class="flowchart-info">
+                        <div class="flowchart-item">
+                            <span>Mulai/Selesai :</span>
+                            <i class="bi bi-app"></i>
+                        </div>
+                        <div class="flowchart-item">
+                            <span>Proses :</span>
+                            <i class="bi bi-square"></i>
+                        </div>
+                        <div class="flowchart-item">
+                            <span>Pilihan :</span>
+                            <i class="bi bi-diamond"></i>
+                        </div>
+                    </div>
                 </div>
                 <button class="btn btn-add" onclick="addActivity()">Tambah Aktivitas</button>
             </div>
@@ -197,5 +248,20 @@
                 table.rows[i].cells[0].innerText = i + 1;
             }
         }
+        function setShape(shape) {
+        // Update the button image and shape based on selection
+        const icon = document.getElementById('dropdown-icon');
+        if (shape === 'persegi') {
+            icon.src = 'https://via.placeholder.com/30';
+            icon.classList = 'square';  // Apply square shape
+        } else if (shape === 'oval') {
+            icon.src = 'https://via.placeholder.com/30';
+            icon.classList = 'oval';  // Apply oval shape
+        } else if (shape === 'belah_ketupat') {
+            icon.src = 'https://via.placeholder.com/30';
+            icon.classList = 'diamond';  // Apply diamond shape
+        }
+    }
+
     </script>
 @endsection

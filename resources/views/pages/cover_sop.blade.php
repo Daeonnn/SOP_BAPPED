@@ -410,7 +410,7 @@
                     </table>
 
                     <a href="{{ route('generate.pdf') }}" class="btn btn-primary mt-2">Generate PDF</a>
-                    <a href="{{ route('flowchart.index') }}" class="btn btn-primary mt-2">Generate PDF</a>
+                    <a href="{{ route('flowchart.index') }}" class="btn btn-primary mt-2">Lanjut Ke flowchart</a>
                 </div>
             </div>
         </div>
