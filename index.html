@@ -1,255 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Responsive Table</title>
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-
-            .table-container {
-                width: 100%;
-                overflow-x: auto; /* Enables horizontal scrolling on small screens */
-                padding: 10px;
-                box-sizing: border-box;
-            }
-
-            .tg {
-                border-collapse: collapse;
-                width: 100%;
-            }
-
-            .tg td,
-            .tg th {
-                border: 1px solid black;
-                padding: 10px;
-                text-align: left;
-                vertical-align: top;
-                font-size: 14px;
-            }
-
-            thead th {
-                text-align: center;
-            }
-
-            .tg th:nth-child(1) {
-                text-align: left;
-            }
-
-            .tg .center {
-                text-align: center;
-            }
-
-            .tg input {
-                width: 100%;
-
-                padding: 5px;
-                font-size: 14px;
-            }
-
-            .header-content {
-                text-align: center;
-                font-size: 18px;
-                line-height: 1.5;
-                display: flex;
-                flex-direction: column; /* Arrange elements vertically */
-                align-items: center; /* Center elements horizontally */
-            }
-
-            .header-content img {
-                width: 80px;
-                height: auto;
-                margin-bottom: 5px; /* Add space below the logo */
-            }
-
-            /* Add extra space above the SUBBAGIAN input */
-            .header-content input {
-                text-align: center;
-                margin-top:50px; /* Add 16px spacing above (equivalent to 2 lines) */
-            }
-
-            @media (max-width: 768px) {
-                .tg td,
-                .tg th {
-                    font-size: 12px;
-                    padding: 8px;
-                }
-
-                .tg input {
-                    font-size: 12px;
-                }
-
-                .header-content img {
-                    width: 60px;
-                }
-
-                .header-content {
-                    font-size: 12px;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <div class="table-container">
-            <table class="tg">
-                <colgroup>
-                    <col style="width: 50%;" />
-                    <col style="width: 25%;" />
-                    <col style="width: 25%;" />
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th rowspan="6" class="center">
-                            <div class="header-content">
-                                <img src="IMG/bappeda.png" alt="LOGO" />
-                                <strong>PEMERINTAH KOTA PONTIANAK</strong>
-                                <br />
-                                Badan Perencanaan Pembangunan Daerah
-                                <br />
-                                Sekretariat
-                                <br />
-                                <input
-                                    type="text"
-                                    placeholder="SUBBAGIAN"
-                                    value=""
-                                />
-                            </div>
-                        </th>
-                        <th style="margin-left: 100px;">No SOP</th>
-                        <th><input type="text" style="border: 0px;" /></th>
-                    </tr>
-                    <tr>
-                        <th>Tgl Pembuatan</th>
-                        <th><input type="text" style="border: 0px;" /></th>
-                    </tr>
-                    <tr>
-                        <th>Tgl Revisi</th>
-                        <th><input type="text" style="border: 0px;" /></th>
-                    </tr>
-                    <tr>
-                        <th>Tgl Aktif</th>
-                        <th><input type="text" style="border: 0px;" /></th>
-                    </tr>
-                    <tr>
-                        <th>Disahkan Oleh</th>
-                        <th>
-                            <textarea
-                                style="
-                                    border: 0;
-                                    resize: none;
-                                    width: 100%;
-                                    height: auto;
-                                    overflow: hidden;
-                                    font-family: inherit;
-                                    font-size: inherit;
-                                    margin: 0;
-                                    outline: none;"
-                            ></textarea>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Nama SOP</th>
-
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Dasar Hukum:</td>
-                        <td colspan="2">Kualifikasi Pelaksana</td>
-                    </tr>
-                    <tr>
-                        <th><textarea
-                            style="
-                                border: 0;
-                                resize: none;
-                                width: 100%;
-                                height: auto;
-                                overflow: hidden;
-                                font-family: inherit;
-                                font-size: inherit;
-                                margin: 0;
-                                outline: none;"
-                        ></textarea></th>
-                        <td colspan="2"><textarea
-                            style="
-                                border: 0;
-                                resize: none;
-                                width: 100%;
-                                height: auto;
-                                overflow: hidden;
-                                font-family: inherit;
-                                font-size: inherit;
-                                margin: 0;
-                                outline: none;"
-                        ></textarea></td>
-                    </tr>
-                    <tr>
-                        <td>Keterkaitan:</td>
-                        <td colspan="2">Peralatan</td>
-                    </tr>
-                    <tr>
-                        <th><textarea
-                            style="
-                                border: 0;
-                                resize: none;
-                                width: 100%;
-                                height: auto;
-                                overflow: hidden;
-                                font-family: inherit;
-                                font-size: inherit;
-                                margin: 0;
-                                outline: none;"
-                        ></textarea></th>
-                        <td colspan="2"><textarea
-                            style="
-                                border: 0;
-                                resize: none;
-                                width: 100%;
-                                height: auto;
-                                overflow: hidden;
-                                font-family: inherit;
-                                font-size: inherit;
-                                margin: 0;
-                                outline: none;"
-                        ></textarea></td>
-                    </tr>
-                    <tr>
-                        <td>Peringatan:</td>
-                        <td colspan="2">Pencatatan</td>
-                    </tr>
-                    <tr>
-                        <th><textarea
-                            style="
-                                border: 0;
-                                resize: none;
-                                width: 100%;
-                                height: auto;
-                                overflow: hidden;
-                                font-family: inherit;
-                                font-size: inherit;
-                                margin: 0;
-                                outline: none;"
-                        ></textarea></th>
-                        <td colspan="2"><textarea
-                            style="
-                                border: 0;
-                                resize: none;
-                                width: 100%;
-                                height: auto;
-                                overflow: hidden;
-                                font-family: inherit;
-                                font-size: inherit;
-                                margin: 0;
-                                outline: none;"
-                        ></textarea></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </body>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konversi Excel ke HTML</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Tabel Kegiatan</h2>
+    <table>
+        <thead>
+            <tr>
+                <th rowspan="2">No</th>
+                <th rowspan="2">Kegiatan</th>
+                <th colspan="3">Pelaksana</th>
+                <th colspan="3">Mutu Buku</th>
+                <th rowspan="2">Keterangan</th>
+            </tr>
+            <tr>
+                <th>Ketua</th>
+                <th>Wakil</th>
+                <th>Sekretaris</th>
+                <th>Kelengkapan</th>
+                <th>Waktu</th>
+                <th>Output</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Baris Data -->
+            <tr>
+                <td>1</td>
+                <td>Nama Kegiatan</td>
+                <td>Ketua 1</td>
+                <td>Wakil 1</td>
+                <td>Sekretaris 1</td>
+                <td>Lengkap</td>
+                <td>Waktu 1</td>
+                <td>Output 1</td>
+                <td>Keterangan 1</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Nama Kegiatan 2</td>
+                <td>Ketua 2</td>
+                <td>Wakil 2</td>
+                <td>Sekretaris 2</td>
+                <td>Lengkap</td>
+                <td>Waktu 2</td>
+                <td>Output 2</td>
+                <td>Keterangan 2</td>
+            </tr>
+            <!-- Tambahkan Baris Data Lainnya -->
+        </tbody>
+    </table>
+</body>
 </html>

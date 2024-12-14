@@ -364,7 +364,7 @@
                                             <img style="height: 100px" src="{{ asset('img/ttd.png') }}" alt="">
                                         </div>
                                         <div style="text-decoration: underline;">
-                                            Doni Hasan Nasarallah
+                                            s
                                         </div>
                                         <div>
                                             NIP: 123456789
@@ -409,7 +409,8 @@
                         </tbody>
                     </table>
 
-                    <a href="" class="btn btn-primary mt-2">Generate PDF</a>
+                    <a href="{{ route('generate.pdf') }}" class="btn btn-primary mt-2">Generate PDF</a>
+                    <a href="{{ route('flowchart.index') }}" class="btn btn-primary mt-2">Generate PDF</a>
                 </div>
             </div>
         </div>

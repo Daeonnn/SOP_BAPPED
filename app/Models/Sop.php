@@ -17,4 +17,10 @@ class Sop extends Model
         'keterangan',
         'file_sk',
     ];
+    public function subBidang()
+    {
+        return $this->belongsTo(SubBidang::class, 'sub_bidang_id');
+    }
+
+
 }

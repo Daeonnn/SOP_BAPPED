@@ -3,6 +3,8 @@
 use App\Http\Controllers\BidangController;
 use App\Http\Controllers\BidangSOPController;
 use App\Http\Controllers\CoverSopController;
+use App\Http\Controllers\FlowcharController;
+use App\Http\Controllers\FlowchartController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SOPController;
@@ -51,9 +53,18 @@ Route::put('/cover_sop/update/{id}', [CoverSopController::class, 'update'])->nam
 Route::get('/pilih-sub-bidang', [CoverSopController::class, 'indexPilihSubBidang'])->name('pilih_sub_bidang.index');
 Route::post('/submit-sop', [CoverSopController::class, 'submitSop'])->name('sop.form');
 
-
 Route::get('/bidang/{id}', [BidangSOPController::class, 'index'])->name('bidang.index');
 Route::get('/bidang/create/{id}', [BidangSOPController::class, 'create'])->name('bidang.create');
+
+Route::post('/generate-pdf', [PdfController::class, 'generatePdf'])->name('generate.pdf');
+// Route::get('/generate-pdf', [PdfController::class, 'generatePdf'])->name('generate.pdf');
+// Route::get('/sop/{id}', [PdfController::class, 'generatePdf'])->name('generate-pdf');
+
+
+Route::get('/flowchart', [FlowchartController::class, 'index'])->name('flowchart.index');
+
+
+
 
 
 

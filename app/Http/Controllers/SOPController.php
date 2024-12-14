@@ -76,6 +76,8 @@ class SOPController extends Controller
 public function export()
 {
     return Excel::download(new SopExport, 'sops.xlsx'); // Mengunduh file Excel dengan nama sops.xlsx
+
 }
+
 
 }
