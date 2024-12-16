@@ -50,45 +50,41 @@
         }
 
         .flowchart-info {
-    display: flex; /* Susun elemen secara horizontal */
-    justify-content: start; /* Rata kiri */
-    gap: 5px; /* Jarak antar item */
-    margin-bottom: 20px;
-}
+            display: flex;
+            justify-content: start;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
 
-.flowchart-item {
-    display: flex;
-    align-items: center; /* Pusatkan vertikal */
-    flex-direction: row; /* Pastikan elemen tersusun horizontal */
-    gap: 5px; /* Jarak antara ikon dan teks */
-    position: relative; /* Dibutuhkan untuk garis vertikal */
-    padding-right: 20px; /* Tambahkan jarak ke kanan */
-}
+        .flowchart-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+            padding-right: 20px;
+        }
 
-.flowchart-item:not(:last-child)::after {
-    content: "|"; /* Garis vertikal */
-    position: absolute;
-    right: 5px; /* Jarak garis dari item */
-    top: 50%; /* Pusatkan vertikal */
-    transform: translateY(-50%);
-    color: #000; /* Warna garis */
-    font-weight: bold;
-    font-size: 18px;
-}
+        .flowchart-item:not(:last-child)::after {
+            content: "|";
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #000;
+            font-weight: bold;
+            font-size: 18px;
+        }
 
-.flowchart-item span {
-    font-weight: bold;
-    color: #333;
-}
+        .flowchart-item span {
+            font-weight: bold;
+            color: #333;
+        }
 
-.flowchart-item i {
-    margin-right: 1px; /* Jarak antara ikon dan teks */
-    font-size: 24px; /* Ukuran ikon */
-}
-
+        .flowchart-item i {
+            font-size: 24px;
+        }
     </style>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <div class="container-fluid">
         <div class="card shadow mb-4">
@@ -137,105 +133,119 @@
                             <td>1</td>
                             <td>Kegiatan A</td>
                             <td>
-                                <div>
-                                    <select id="statusSelect">
-                                        <option value="" disabled selected></option>
-                                        <option value="mulai_selesai">Mulai/Selesai</option>
-                                        <option value="proses">Proses</option>
-                                        <option value="pilihan">Pilihan</option>
-                                    </select>
-                                </div>
+                                <select id="statusSelect">
+                                    <option value="" disabled selected></option>
+                                    <option value="mulai_selesai">Mulai/Selesai</option>
+                                    <option value="proses">Proses</option>
+                                    <option value="pilihan">Pilihan</option>
+                                </select>
                             </td>
-                            <td><div>
+                            <td>
                                 <select id="statusSelect">
                                     <option value="" disabled selected></option>
                                     <option value="mulai_selesai">Mulai/Selesai</option>
                                     <option value="proses">Proses</option>
                                     <option value="pilihan">Pilihan</option>
                                 </select>
-                            </div>
-                        </td>
-                            <td><div>
+                            </td>
+                            <td>
                                 <select id="statusSelect">
                                     <option value="" disabled selected></option>
                                     <option value="mulai_selesai">Mulai/Selesai</option>
                                     <option value="proses">Proses</option>
                                     <option value="pilihan">Pilihan</option>
                                 </select>
-                            </div>
-                        </td>
+                            </td>
                             <td>Lengkap</td>
                             <td>On Time</td>
                             <td>Baik</td>
                             <td>Catatan A</td>
                             <td><button class="btn btn-delete" onclick="deleteRow(this)">Hapus</button></td>
                         </tr>
+                    </tbody>
+                </table>
+                <button id="submit" type="button" class="btn btn-primary mt-2" style="display: none" onclick="submitTable()">Submit</button>
+                <button id="previewButton" class="btn btn-success mt-2" onclick="previewTable()">Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" id="previewTableContainer" style="display: none;">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Data Flowchart</h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>2</td>
-                            <td>Kegiatan B</td>
-                            <td><div>
-                                <select id="statusSelect">
-                                    <option value="" disabled selected></option>
-                                    <option value="mulai_selesai">Mulai/Selesai</option>
-                                    <option value="proses">Proses</option>
-                                    <option value="pilihan">Pilihan</option>
-                                </select>
-                            </div></td>
-                            <td><div>
-                                <select id="statusSelect">
-                                    <option value="" disabled selected></option>
-                                    <option value="mulai_selesai">Mulai/Selesai</option>
-                                    <option value="proses">Proses</option>
-                                    <option value="pilihan">Pilihan</option>
-                                </select>
-                            </div></td>
-                            <td><div>
-                                <select id="statusSelect">
-                                    <option value="" disabled selected></option>
-                                    <option value="mulai_selesai">Mulai/Selesai</option>
-                                    <option value="proses">Proses</option>
-                                    <option value="pilihan">Pilihan</option>
-                                </select>
-                            </div></td>
-                            <td>Kurang</td>
-                            <td>Terlambat</td>
-                            <td>Cukup</td>
-                            <td>Catatan B</td>
-                            <td><button class="btn btn-delete" onclick="deleteRow(this)">Hapus</button></td>
+                            <th rowspan="2">No</th>
+                            <th rowspan="2">Kegiatan</th>
+                            <th colspan="3">Pelaksana</th>
+                            <th colspan="3">Mutu Buku</th>
+                            <th rowspan="2">Keterangan</th>
+                        </tr>
+                        <tr>
+                            <th>Ketua</th>
+                            <th>Wakil</th>
+                            <th>Sekretaris</th>
+                            <th>Kelengkapan</th>
+                            <th>Waktu</th>
+                            <th>Output</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Tabel preview akan diisi dengan data tabel kegiatan -->
+                        <tr>
+                            <td>1</td>
+                            <td>Kegiatan A</td>
+                            <td>Mulai/Selesai</td>
+                            <td>Proses</td>
+                            <td>Pilihan</td>
+                            <td>Lengkap</td>
+                            <td>On Time</td>
+                            <td>Baik</td>
+                            <td>Catatan A</td>
                         </tr>
                     </tbody>
                 </table>
+                <a href="{{ route('generate.pdf') }}" class="btn btn-primary mt-2">Generate PDF</a>
             </div>
         </div>
     </div>
 
     <script>
-        function addActivity() {
-            const table = document.getElementById('activityTable').getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
+        function previewTable() {
+            // Show preview table
+            document.getElementById('previewTableContainer').style.display = 'block';
+            document.getElementById('submit').style.display = 'inline-block'; // Show submit button
+            document.getElementById('previewButton').style.display = 'none'; // Hide preview button
 
-            const cellNo = newRow.insertCell(0);
-            const cellActivity = newRow.insertCell(1);
-            const cellKetua = newRow.insertCell(2);
-            const cellWakil = newRow.insertCell(3);
-            const cellSekretaris = newRow.insertCell(4);
-            const cellKelengkapan = newRow.insertCell(5);
-            const cellWaktu = newRow.insertCell(6);
-            const cellOutput = newRow.insertCell(7);
-            const cellKeterangan = newRow.insertCell(8);
-            const cellActions = newRow.insertCell(9);
+            // Get data from activity table and populate preview table
+            const rows = document.getElementById('activityTable').rows;
+            const previewTable = document.querySelector('#previewTableContainer tbody');
+            previewTable.innerHTML = ''; // Clear existing rows
 
-            const rowCount = table.rows.length;
-            cellNo.innerHTML = rowCount;
-            cellActivity.innerHTML = `<input type="text" placeholder="Nama Kegiatan">`;
-            cellKetua.innerHTML = `<input type="text" placeholder="Ketua">`;
-            cellWakil.innerHTML = `<input type="text" placeholder="Wakil">`;
-            cellSekretaris.innerHTML = `<input type="text" placeholder="Sekretaris">`;
-            cellKelengkapan.innerHTML = `<input type="text" placeholder="Kelengkapan">`;
-            cellWaktu.innerHTML = `<input type="text" placeholder="Waktu">`;
-            cellOutput.innerHTML = `<input type="text" placeholder="Output">`;
-            cellKeterangan.innerHTML = `<input type="text" placeholder="Keterangan">`;
-            cellActions.innerHTML = `<button class="btn btn-delete" onclick="deleteRow(this)">Hapus</button>`;
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].cells;
+                const newRow = previewTable.insertRow();
+                for (let j = 0; j < cells.length - 1; j++) {
+                    const newCell = newRow.insertCell(j);
+                    newCell.textContent = cells[j].textContent || cells[j].querySelector('select')?.value || '';
+                }
+            }
+        }
+
+        function submitTable() {
+            // Disable editing and hide buttons
+            const table = document.getElementById('activityTable');
+            const submitButton = document.getElementById('submit');
+            const previewButton = document.getElementById('previewButton');
+            const deleteButtons = table.querySelectorAll('.btn-delete');
+
+            deleteButtons.forEach(button => button.disabled = true);
+            previewButton.disabled = true;
+            submitButton.style.display = 'none'; // Hide submit button
         }
 
         function deleteRow(button) {
@@ -243,25 +253,37 @@
             row.parentElement.removeChild(row);
 
             // Update numbering
+            updateRowNumbers();
+        }
+
+        function addActivity() {
             const table = document.getElementById('activityTable').getElementsByTagName('tbody')[0];
-            for (let i = 0; i < table.rows.length; i++) {
-                table.rows[i].cells[0].innerText = i + 1;
+            const newRow = table.insertRow();
+            const rowCount = table.rows.length;
+
+            newRow.insertCell(0).innerText = rowCount;
+
+            newRow.insertCell(1).innerHTML = `<input type="text" placeholder="Nama Kegiatan">`;
+            newRow.insertCell(2).innerHTML = `<select><option value="mulai_selesai">Mulai/Selesai</option><option value="proses">Proses</option><option value="pilihan">Pilihan</option></select>`;
+            newRow.insertCell(3).innerHTML = `<select><option value="mulai_selesai">Mulai/Selesai</option><option value="proses">Proses</option><option value="pilihan">Pilihan</option></select>`;
+            newRow.insertCell(4).innerHTML = `<select><option value="mulai_selesai">Mulai/Selesai</option><option value="proses">Proses</option><option value="pilihan">Pilihan</option></select>`;
+            newRow.insertCell(5).innerHTML = `<input type="text" placeholder="Kelengkapan">`;
+            newRow.insertCell(6).innerHTML = `<input type="text" placeholder="Waktu">`;
+            newRow.insertCell(7).innerHTML = `<input type="text" placeholder="Output">`;
+            newRow.insertCell(8).innerHTML = `<input type="text" placeholder="Keterangan">`;
+            newRow.insertCell(9).innerHTML = `<button class="btn btn-delete" onclick="deleteRow(this)">Hapus</button>`;
+
+            // Update nomor urut setelah baris baru ditambahkan
+            updateRowNumbers();
+        }
+
+        function updateRowNumbers() {
+            const table = document.getElementById('activityTable').getElementsByTagName('tbody')[0];
+            const rows = table.rows;
+
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].cells[0].innerText = i + 1; // Update nomor urut
             }
         }
-        function setShape(shape) {
-        // Update the button image and shape based on selection
-        const icon = document.getElementById('dropdown-icon');
-        if (shape === 'persegi') {
-            icon.src = 'https://via.placeholder.com/30';
-            icon.classList = 'square';  // Apply square shape
-        } else if (shape === 'oval') {
-            icon.src = 'https://via.placeholder.com/30';
-            icon.classList = 'oval';  // Apply oval shape
-        } else if (shape === 'belah_ketupat') {
-            icon.src = 'https://via.placeholder.com/30';
-            icon.classList = 'diamond';  // Apply diamond shape
-        }
-    }
-
     </script>
 @endsection
