@@ -3,287 +3,296 @@
 @section('title', 'Tabel Kegiatan')
 
 @section('content')
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+<style>
+    /* Mengatur tampilan tabel */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
 
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: center;
-        }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+        word-wrap: break-word;
+        position: relative;
+    }
 
-        th {
-            background-color: #f2f2f2;
-        }
+    th {
+        background-color: #f2f2f2;
+    }
 
-        .btn {
-            padding: 5px 10px;
-            margin: 5px;
-            cursor: pointer;
-        }
+    .btn {
+        padding: 5px 10px;
+        margin: 5px;
+        cursor: pointer;
+    }
 
-        .btn-add {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-        }
+    .btn-add {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+    }
 
-        .btn-delete {
-            background-color: #f44336;
-            color: white;
-            border: none;
-        }
+    .btn-delete {
+        background-color: #f44336;
+        color: white;
+        border: none;
+    }
 
-        .status-images {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 10px;
-        }
+    input, select {
+        width: 100%;
+        box-sizing: border-box;
+    }
 
-        .status-image {
-            width: 30px;
-            height: 30px;
-        }
+    /* Styling untuk Flowchart Preview */
+    .flowchart-preview {
+        margin-top: 20px;
+        text-align: center;
+    }
 
-        .flowchart-info {
-            display: flex;
-            justify-content: start;
-            gap: 5px;
-            margin-bottom: 20px;
-        }
+    .flowchart-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        position: relative;
+    }
 
-        .flowchart-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            position: relative;
-            padding-right: 20px;
-        }
+    .flowchart-box {
+        border: 2px solid #ccc;
+        padding: 10px;
+        margin-top: 20px;
+        text-align: center;
+        position: relative;
+        display: inline-block;
+    }
 
-        .flowchart-item:not(:last-child)::after {
-            content: "|";
-            position: absolute;
-            right: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #000;
-            font-weight: bold;
-            font-size: 18px;
-        }
+    .flowchart-cell {
+        position: relative;
+        text-align: center;
+        display: inline-block;
+        margin: 10px;
+    }
 
-        .flowchart-item span {
-            font-weight: bold;
-            color: #333;
-        }
+    .flowchart-shape {
+        display: inline-block;
+        padding: 10px;
+        margin: 5px;
+        text-align: center;
+        position: relative;
+    }
 
-        .flowchart-item i {
-            font-size: 24px;
-        }
-    </style>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    .rounded-rect {
+        border: 2px solid #4CAF50;
+        border-radius: 12px;
+        background-color: #f9f9f9;
+        width: 100px;
+        height: 60px;
+    }
 
-    <div class="container-fluid">
+    .rect {
+        border: 2px solid #2196F3;
+        background-color: #f9f9f9;
+        width: 100px;
+        height: 60px;
+    }
+
+    .diamond {
+        border: 2px solid #FF9800;
+        background-color: #f9f9f9;
+        width: 100px;
+        height: 100px;
+        transform: rotate(45deg);
+        position: relative;
+        margin: 10px;
+    }
+
+    /* Garis penghubung flowchart di dalam tabel */
+    .flowchart-line {
+        position: absolute;
+        width: 2px;
+        background-color: #333;
+        height: 60px;
+        top: 50%;
+        left: 100%;
+        transform: translateY(-50%);
+    }
+
+    /* Garis penghubung horizontal */
+    .horizontal-line {
+        position: absolute;
+        width: 60px;
+        background-color: #333;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%);
+    }
+</style>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h3 class="m-0 font-weight-bold text-primary">Tabel Kegiatan</h3>
+            <button class="btn btn-add" onclick="addActivity()">Tambah Aktivitas</button>
+        </div>
+        <div class="card-body">
+            <table id="activityTable">
+                <thead>
+                    <tr>
+                        <th rowspan="2">No</th>
+                        <th rowspan="2">Kegiatan</th>
+                        <th colspan="3">Pelaksana</th>
+                        <th colspan="3">Mutu Buku</th>
+                        <th rowspan="2">Keterangan</th>
+                        <th rowspan="2">Aksi</th>
+                    </tr>
+                    <tr>
+                        <th>Ketua</th>
+                        <th>Wakil</th>
+                        <th>Sekretaris</th>
+                        <th>Kelengkapan</th>
+                        <th>Waktu</th>
+                        <th>Output</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button class="btn btn-preview" onclick="showPreview()">Preview</button>
+        </div>
+    </div>
+
+    <!-- Preview Section -->
+    <div class="flowchart-preview" id="previewSection" style="display: none;">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h3 class="m-0 font-weight-bold text-primary">Bentuk Flowchart</h3>
-                <div class="card-body">
-                    <div class="flowchart-info">
-                        <div class="flowchart-item">
-                            <span>Mulai/Selesai :</span>
-                            <i class="bi bi-app"></i>
-                        </div>
-                        <div class="flowchart-item">
-                            <span>Proses :</span>
-                            <i class="bi bi-square"></i>
-                        </div>
-                        <div class="flowchart-item">
-                            <span>Pilihan :</span>
-                            <i class="bi bi-diamond"></i>
-                        </div>
+                <h6 class="m-0 font-weight-bold text-primary">Preview Tabel Kegiatan dan Flowchart</h6>
+            </div>
+            <div class="card-body">
+                <!-- Table Preview -->
+                <h5>Tabel Kegiatan</h5>
+                <table id="previewTable" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Kegiatan</th>
+                            <th>Ketua</th>
+                            <th>Wakil</th>
+                            <th>Sekretaris</th>
+                            <th>Kelengkapan</th>
+                            <th>Waktu</th>
+                            <th>Output</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewTableBody"></tbody>
+                </table>
+
+                {{-- <!-- Flowchart Preview -->
+                <div class="flowchart-container" id="flowchartContainer"></div> --}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addActivity() {
+        const table = document.getElementById('activityTable').getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+        const rowCount = table.rows.length;
+
+        newRow.insertCell(0).innerText = rowCount; // Nomor
+        newRow.insertCell(1).innerHTML = '<input type="text" placeholder="Kegiatan">'; // Kegiatan
+        newRow.insertCell(2).innerHTML = createSelectBox(); // Ketua
+        newRow.insertCell(3).innerHTML = createSelectBox(); // Wakil
+        newRow.insertCell(4).innerHTML = createSelectBox(); // Sekretaris
+        newRow.insertCell(5).innerHTML = '<input type="text" placeholder="Kelengkapan">'; // Kelengkapan
+        newRow.insertCell(6).innerHTML = '<input type="text" placeholder="Waktu">'; // Waktu
+        newRow.insertCell(7).innerHTML = '<input type="text" placeholder="Output">'; // Output
+        newRow.insertCell(8).innerHTML = '<input type="text" placeholder="Keterangan">'; // Keterangan
+        newRow.insertCell(9).innerHTML = '<button class="btn btn-delete" onclick="deleteRow(this)">Hapus</button>'; // Hapus button
+    }
+
+    function createSelectBox() {
+        return `
+            <select>
+                <option value="">--Pilih--</option>
+                <option value="mulai">Mulai/Selesai</option>
+                <option value="proses">Proses</option>
+                <option value="pilihan">Pilihan</option>
+            </select>
+        `;
+    }
+
+    function deleteRow(button) {
+        const row = button.parentElement.parentElement;
+        row.parentElement.removeChild(row);
+    }
+
+    function showPreview() {
+        const table = document.getElementById('activityTable').getElementsByTagName('tbody')[0];
+        let previewTableContent = '';
+        let flowchartContent = '';
+
+        for (let i = 0; i < table.rows.length; i++) {
+            const row = table.rows[i];
+            const kegiatan = row.cells[1].querySelector('input').value || `Kegiatan ${i + 1}`;
+            const ketua = row.cells[2].querySelector('select').value;
+            const wakil = row.cells[3].querySelector('select').value;
+            const sekre = row.cells[4].querySelector('select').value;
+            const kelengkapan = row.cells[5].querySelector('input').value;
+            const waktu = row.cells[6].querySelector('input').value;
+            const output = row.cells[7].querySelector('input').value;
+            const keterangan = row.cells[8].querySelector('input').value;
+
+            // Menambahkan data ke dalam tabel preview
+            previewTableContent += `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${kegiatan}</td>
+                    <td>${getFlowchartShapeHTML(ketua)}</td>
+                    <td>${getFlowchartShapeHTML(wakil)}</td>
+                    <td>${getFlowchartShapeHTML(sekre)}</td>
+                    <td>${kelengkapan}</td>
+                    <td>${waktu}</td>
+                    <td>${output}</td>
+                    <td>${keterangan}</td>
+                </tr>
+            `;
+
+            // Menambahkan flowchart dengan garis konektor di dalam sel kotak tabel
+            flowchartContent += `
+                <div class="flowchart-shape-container">
+                    <div class="flowchart-box">
+                        ${getFlowchartShapeHTML(ketua)}
+                        <div class="horizontal-line"></div>
+                        ${getFlowchartShapeHTML(wakil)}
+                        <div class="horizontal-line"></div>
+                        ${getFlowchartShapeHTML(sekre)}
                     </div>
                 </div>
-                <button class="btn btn-add" onclick="addActivity()">Tambah Aktivitas</button>
-            </div>
-            <div class="card-body">
-                <table id="activityTable">
-                    <thead>
-                        <tr>
-                            <th rowspan="2">No</th>
-                            <th rowspan="2">Kegiatan</th>
-                            <th colspan="3">Pelaksana</th>
-                            <th colspan="3">Mutu Buku</th>
-                            <th rowspan="2">Keterangan</th>
-                            <th rowspan="2">Aksi</th>
-                        </tr>
-                        <tr>
-                            <th>Ketua</th>
-                            <th>Wakil</th>
-                            <th>Sekretaris</th>
-                            <th>Kelengkapan</th>
-                            <th>Waktu</th>
-                            <th>Output</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Kegiatan A</td>
-                            <td>
-                                <select id="statusSelect">
-                                    <option value="" disabled selected></option>
-                                    <option value="mulai_selesai">Mulai/Selesai</option>
-                                    <option value="proses">Proses</option>
-                                    <option value="pilihan">Pilihan</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select id="statusSelect">
-                                    <option value="" disabled selected></option>
-                                    <option value="mulai_selesai">Mulai/Selesai</option>
-                                    <option value="proses">Proses</option>
-                                    <option value="pilihan">Pilihan</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select id="statusSelect">
-                                    <option value="" disabled selected></option>
-                                    <option value="mulai_selesai">Mulai/Selesai</option>
-                                    <option value="proses">Proses</option>
-                                    <option value="pilihan">Pilihan</option>
-                                </select>
-                            </td>
-                            <td>Lengkap</td>
-                            <td>On Time</td>
-                            <td>Baik</td>
-                            <td>Catatan A</td>
-                            <td><button class="btn btn-delete" onclick="deleteRow(this)">Hapus</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button id="submit" type="button" class="btn btn-primary mt-2" style="display: none" onclick="submitTable()">Submit</button>
-                <button id="previewButton" class="btn btn-success mt-2" onclick="previewTable()">Preview</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid" id="previewTableContainer" style="display: none;">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Flowchart</h6>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th rowspan="2">No</th>
-                            <th rowspan="2">Kegiatan</th>
-                            <th colspan="3">Pelaksana</th>
-                            <th colspan="3">Mutu Buku</th>
-                            <th rowspan="2">Keterangan</th>
-                        </tr>
-                        <tr>
-                            <th>Ketua</th>
-                            <th>Wakil</th>
-                            <th>Sekretaris</th>
-                            <th>Kelengkapan</th>
-                            <th>Waktu</th>
-                            <th>Output</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Tabel preview akan diisi dengan data tabel kegiatan -->
-                        <tr>
-                            <td>1</td>
-                            <td>Kegiatan A</td>
-                            <td>Mulai/Selesai</td>
-                            <td>Proses</td>
-                            <td>Pilihan</td>
-                            <td>Lengkap</td>
-                            <td>On Time</td>
-                            <td>Baik</td>
-                            <td>Catatan A</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <a href="{{ route('generate.pdf') }}" class="btn btn-primary mt-2">Generate PDF</a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function previewTable() {
-            // Show preview table
-            document.getElementById('previewTableContainer').style.display = 'block';
-            document.getElementById('submit').style.display = 'inline-block'; // Show submit button
-            document.getElementById('previewButton').style.display = 'none'; // Hide preview button
-
-            // Get data from activity table and populate preview table
-            const rows = document.getElementById('activityTable').rows;
-            const previewTable = document.querySelector('#previewTableContainer tbody');
-            previewTable.innerHTML = ''; // Clear existing rows
-
-            for (let i = 1; i < rows.length; i++) {
-                const cells = rows[i].cells;
-                const newRow = previewTable.insertRow();
-                for (let j = 0; j < cells.length - 1; j++) {
-                    const newCell = newRow.insertCell(j);
-                    newCell.textContent = cells[j].textContent || cells[j].querySelector('select')?.value || '';
-                }
-            }
+            `;
         }
 
-        function submitTable() {
-            // Disable editing and hide buttons
-            const table = document.getElementById('activityTable');
-            const submitButton = document.getElementById('submit');
-            const previewButton = document.getElementById('previewButton');
-            const deleteButtons = table.querySelectorAll('.btn-delete');
+        document.getElementById('previewTableBody').innerHTML = previewTableContent;
+        // document.getElementById('flowchartContainer').innerHTML = flowchartContent;
+        document.getElementById('previewSection').style.display = 'block';
+    }
 
-            deleteButtons.forEach(button => button.disabled = true);
-            previewButton.disabled = true;
-            submitButton.style.display = 'none'; // Hide submit button
+    function getFlowchartShapeHTML(value) {
+        switch (value) {
+            case 'mulai':
+                return `<div class="flowchart-shape rounded-rect">Mulai/Selesai</div>`;
+            case 'proses':
+                return `<div class="flowchart-shape rect">Proses</div>`;
+            case 'pilihan':
+                return `<div class="flowchart-shape diamond">Pilihan</div>`;
+            default:
+                return '';
         }
-
-        function deleteRow(button) {
-            const row = button.parentElement.parentElement;
-            row.parentElement.removeChild(row);
-
-            // Update numbering
-            updateRowNumbers();
-        }
-
-        function addActivity() {
-            const table = document.getElementById('activityTable').getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
-            const rowCount = table.rows.length;
-
-            newRow.insertCell(0).innerText = rowCount;
-
-            newRow.insertCell(1).innerHTML = `<input type="text" placeholder="Nama Kegiatan">`;
-            newRow.insertCell(2).innerHTML = `<select><option value="mulai_selesai">Mulai/Selesai</option><option value="proses">Proses</option><option value="pilihan">Pilihan</option></select>`;
-            newRow.insertCell(3).innerHTML = `<select><option value="mulai_selesai">Mulai/Selesai</option><option value="proses">Proses</option><option value="pilihan">Pilihan</option></select>`;
-            newRow.insertCell(4).innerHTML = `<select><option value="mulai_selesai">Mulai/Selesai</option><option value="proses">Proses</option><option value="pilihan">Pilihan</option></select>`;
-            newRow.insertCell(5).innerHTML = `<input type="text" placeholder="Kelengkapan">`;
-            newRow.insertCell(6).innerHTML = `<input type="text" placeholder="Waktu">`;
-            newRow.insertCell(7).innerHTML = `<input type="text" placeholder="Output">`;
-            newRow.insertCell(8).innerHTML = `<input type="text" placeholder="Keterangan">`;
-            newRow.insertCell(9).innerHTML = `<button class="btn btn-delete" onclick="deleteRow(this)">Hapus</button>`;
-
-            // Update nomor urut setelah baris baru ditambahkan
-            updateRowNumbers();
-        }
-
-        function updateRowNumbers() {
-            const table = document.getElementById('activityTable').getElementsByTagName('tbody')[0];
-            const rows = table.rows;
-
-            for (let i = 0; i < rows.length; i++) {
-                rows[i].cells[0].innerText = i + 1; // Update nomor urut
-            }
-        }
-    </script>
+    }
+</script>
 @endsection
