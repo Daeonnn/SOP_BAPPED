@@ -156,7 +156,7 @@ function createNumberedSelectBox(rowIndex, position) {
         <div class="select-container">
             <div class="node-number">${nodeNum}</div>
             <select class="node-select" data-position="${position}" onchange="updateNodeType(this, ${nodeNum})">
-                <option value="">--Pilih--</option>
+                <option value=""></option>
                 <option value="mulai">Mulai/Selesai</option>
                 <option value="proses">Proses</option>
                 <option value="pilihan">Pilihan</option>
@@ -244,58 +244,69 @@ function createNode(type, x, y, width, height, text = '') {
             </g>`;
 
         case 'pilihan':
-            const halfWidth = width/2;
-            const halfHeight = height/2;
+            const diamondWidth = width * 1.2;
+            const diamondHeight = height * 1.2;
             return `<g>
-                <polygon points="${x},${y-halfHeight}
-                    ${x+halfWidth},${y}
-                    ${x},${y+halfHeight}
-                    ${x-halfWidth},${y}"
+                <path d="M ${x} ${y - diamondHeight/2}
+                         L ${x + diamondWidth/2} ${y}
+                         L ${x} ${y + diamondHeight/2}
+                         L ${x - diamondWidth/2} ${y} Z"
                     style="fill:white;stroke:black;stroke-width:${strokeWidth}"/>
                 <text x="${x}" y="${y}"
                     text-anchor="middle"
                     alignment-baseline="middle"
                     style="font-size: 12px;">${textParts}</text>
             </g>`;
+
+        default:
+            return '';
     }
-    return '';
 }
 
 
-function createConnection(startX, startY, endX, endY, type, branchTo = '') {
+function createConnection(startX, startY, endX, endY, type, branchInput) {
     const verticalGap = 40;
-    const horizontalGap = 30;
-    let path = '';
+    const horizontalOffset = 30;
 
     if (type === 'pilihan') {
-        // True path - langsung ke bawah
+        // True path - goes to next node
         const truePath = `
-            M ${startX} ${startY}
-            L ${startX - horizontalGap} ${startY}
-            L ${startX - horizontalGap} ${endY - verticalGap}
+            M ${startX} ${startY + 20}
+            L ${startX} ${endY - verticalGap}
             L ${endX} ${endY - verticalGap}
             L ${endX} ${endY}`;
 
-        // False path - ke node berikutnya
+        // False path - goes back to previous process
+        // Calculate previous node position (one row up)
+        const prevY = startY - 120; // Go up one row
         const falsePath = `
-            M ${startX} ${startY + 20}
-            L ${startX} ${endY}`;
-            
+            M ${startX + 40} ${startY}
+            L ${startX + horizontalOffset + 20} ${startY}
+            L ${startX + horizontalOffset + 20} ${prevY}
+            L ${startX} ${prevY}`;
+
         return `
             <path d="${truePath}" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
             <path d="${falsePath}" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
-            <text x="${startX + 15}" y="${startY + 30}" text-anchor="start">True</text>
-            <text x="${startX - horizontalGap - 5}" y="${startY}" text-anchor="end">False</text>`;
+            <text x="${startX + 45}" y="${startY}" text-anchor="start">False</text>
+            <text x="${startX + 5}" y="${(startY + endY - verticalGap)/2}" text-anchor="start">True</text>`;
     } else {
-        // Standard connection - vertical then horizontal
-        path = `
+        // Standard connection
+        const path = `
             M ${startX} ${startY + 20}
-            L ${startX} ${startY + verticalGap}
-            L ${endX} ${startY + verticalGap}
+            L ${startX} ${endY - verticalGap}
+            L ${endX} ${endY - verticalGap}
             L ${endX} ${endY}`;
 
         return `<path d="${path}" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>`;
     }
+}
+
+function getColumnPosition(nodeNumber) {
+    const column = (nodeNumber - 1) % 3;
+    if (column === 0) return 200;      // ketua
+    else if (column === 1) return 450; // wakil
+    return 700;                        // sekretaris
 }
 
 function createSelectBox(index) {
@@ -310,18 +321,6 @@ function createSelectBox(index) {
                onchange="updateFlowchart()">`;
 }
 
-function updateNodeType(select, nodeNumber) {
-    const row = select.closest('tr');
-    const branchInput = select.nextElementSibling;
-    if (select.value === 'pilihan') {
-        branchInput.style.display = 'inline-block';
-    } else {
-        branchInput.style.display = 'none';
-    }
-    showPreview();
-}
-
-
 function showPreview() {
     const table = document.getElementById('activityTable').getElementsByTagName('tbody')[0];
     const previewTableBody = document.getElementById('previewTableBody');
@@ -329,6 +328,13 @@ function showPreview() {
 
     previewTableBody.innerHTML = '';
     flowchartLayer.innerHTML = '';
+
+    // Updated positions to space out the columns more
+    const positions = {
+        ketua: 200,    // Moved left
+        wakil: 450,    // Centered
+        sekretaris: 700 // Moved right
+    };
 
     let svg = `
         <svg width="100%" height="100%" style="position:absolute;top:0;left:0;pointer-events:none;">
@@ -341,99 +347,135 @@ function showPreview() {
             <g transform="translate(0,20)">`;
 
     const rows = Array.from(table.getElementsByTagName('tr'));
-    const positions = {
-        ketua: 250,
-        wakil: 430,
-        sekretaris: 610
-    };
+    let nodeMap = new Map();
 
+    // First pass: Create nodes
     rows.forEach((row, rowIndex) => {
-        // Copy data to preview table
-        const newRow = document.createElement('tr');
-        Array.from(row.cells).forEach((cell, cellIndex) => {
-            const newCell = document.createElement('td');
-            if (cellIndex < 8) {
-                newCell.textContent = cellIndex === 0 ? cell.textContent :
-                    cell.querySelector('input')?.value ||
-                    cell.querySelector('select')?.value || '';
-            }
-            newRow.appendChild(newCell);
-        });
-        previewTableBody.appendChild(newRow);
-
-        // Create flowchart elements
         const yPos = rowIndex * 120 + 60;
 
-        // Add nodes and connections
-        Object.entries(positions).forEach(([role, xPos], index) => {
+        Object.entries(positions).forEach(([role, xPos]) => {
             const select = row.querySelector(`select[data-position="${role}"]`);
             if (select && select.value) {
-                // Add node
-                svg += createNode(select.value, xPos, yPos, 80, 40,
-                    row.cells[1].querySelector('input').value);
+                const nodeType = select.value;
+                const nodeText = row.cells[1].querySelector('input').value || '';
+                svg += createNode(nodeType, xPos, yPos, 80, 40, nodeText);
 
-                // Find next node for connection
-                let nextNodeFound = false;
-
-                // Check remaining nodes in current row
-                for (let i = index + 1; i < Object.entries(positions).length && !nextNodeFound; i++) {
-                    const nextRole = Object.keys(positions)[i];
-                    const nextSelect = row.querySelector(`select[data-position="${nextRole}"]`);
-                    if (nextSelect && nextSelect.value) {
-                        svg += createConnection(xPos, yPos,
-                            positions[nextRole], yPos,
-                            select.value);
-                        nextNodeFound = true;
-                    }
-                }
-
-                // If no next node in current row, connect to first node in next row
-                if (!nextNodeFound && rowIndex < rows.length - 1) {
-                    const nextRow = rows[rowIndex + 1];
-                    for (const [nextRole, nextXPos] of Object.entries(positions)) {
-                        const nextSelect = nextRow.querySelector(`select[data-position="${nextRole}"]`);
-                        if (nextSelect && nextSelect.value) {
-                            svg += createConnection(xPos, yPos,
-                                nextXPos, yPos + 120,
-                                select.value);
-                            break;
-                        }
-                    }
-                }
+                const nodeId = `${role}-${rowIndex}`;
+                nodeMap.set(nodeId, {
+                    type: nodeType,
+                    x: xPos,
+                    y: yPos,
+                    branchTo: select.nextElementSibling?.value
+                });
             }
         });
     });
 
-    svg += '</g></svg>';
-    flowchartLayer.innerHTML = svg;
-}
+    // Second pass: Create connections with improved routing
+    for (const [currentId, currentNode] of nodeMap) {
+        const nextNodeId = findNextActiveNode(nodeMap, currentId);
+        if (nextNodeId) {
+            const nextNode = nodeMap.get(nextNodeId);
+            const currentSelect = document.querySelector(`select[data-position="${currentId.split('-')[0]}"]`);
+            const branchInput = currentSelect?.nextElementSibling;
 
-function findNextActiveNode(tableData, currentRowIndex, currentRole) {
-    const roles = ['ketua', 'wakil', 'sekretaris'];
-    const currentRoleIndex = roles.indexOf(currentRole);
-
-    // Cek node di baris yang sama
-    for (let i = currentRoleIndex + 1; i < roles.length; i++) {
-        if (tableData[currentRowIndex][roles[i]].type) {
-            return {
-                role: roles[i],
-                rowIndex: currentRowIndex
-            };
+            svg += createConnection(
+                currentNode.x,
+                currentNode.y,
+                nextNode.x,
+                nextNode.y,
+                currentNode.type,
+                branchInput
+            );
         }
     }
 
-    // Cek node di baris berikutnya
-    if (currentRowIndex + 1 < tableData.length) {
+    svg += '</g></svg>';
+    flowchartLayer.innerHTML = svg;
+
+    // Update preview table
+    rows.forEach(row => {
+        const newRow = previewTableBody.insertRow();
+        Array.from(row.cells).forEach((cell, index) => {
+            const newCell = newRow.insertCell();
+            if (index < 8) {
+                newCell.textContent = index === 0 ? cell.textContent :
+                    cell.querySelector('input')?.value ||
+                    cell.querySelector('select')?.value || '';
+            }
+        });
+    });
+}
+
+// Update handler for node type changes
+function updateNodeType(select, nodeNumber) {
+    const branchInput = select.nextElementSibling;
+    if (select.value === 'pilihan') {
+        branchInput.style.display = 'inline-block';
+    } else {
+        branchInput.style.display = 'none';
+    }
+    showPreview();
+}
+
+function findNextActiveNode(nodeMap, currentId) {
+    const [currentRole, currentRowIndex] = currentId.split('-');
+    const roles = ['ketua', 'wakil', 'sekretaris'];
+    const currentRoleIndex = roles.indexOf(currentRole);
+    const currentRow = parseInt(currentRowIndex);
+
+    // For pilihan nodes, handle True path
+    const select = document.querySelector(`select[data-position="${currentRole}"]`);
+    if (select?.value === 'pilihan') {
+        // Continue to next node for True path
+        // Check next node in same row
+        for (let i = currentRoleIndex + 1; i < roles.length; i++) {
+            const nextId = `${roles[i]}-${currentRow}`;
+            if (nodeMap.has(nextId)) {
+                return nextId;
+            }
+        }
+        // Check first node in next row
+        const nextRow = currentRow + 1;
         for (const role of roles) {
-            if (tableData[currentRowIndex + 1][role].type) {
-                return {
-                    role: role,
-                    rowIndex: currentRowIndex + 1
-                };
+            const nextId = `${role}-${nextRow}`;
+            if (nodeMap.has(nextId)) {
+                return nextId;
+            }
+        }
+    } else {
+        // Normal forward progression for non-pilihan nodes
+        for (let i = currentRoleIndex + 1; i < roles.length; i++) {
+            const nextId = `${roles[i]}-${currentRow}`;
+            if (nodeMap.has(nextId)) {
+                return nextId;
+            }
+        }
+
+        const nextRow = currentRow + 1;
+        for (const role of roles) {
+            const nextId = `${role}-${nextRow}`;
+            if (nodeMap.has(nextId)) {
+                return nextId;
             }
         }
     }
 
+    return null;
+}
+function findPreviousProcessNode(nodeMap, currentId) {
+    const [currentRole, currentRowIndex] = currentId.split('-');
+    const currentRow = parseInt(currentRowIndex);
+    const prevRow = currentRow - 1;
+
+    if (prevRow >= 0) {
+        // Look for process nodes in previous row
+        for (const [nodeId, node] of nodeMap.entries()) {
+            if (nodeId.endsWith(`-${prevRow}`) && node.type === 'proses') {
+                return nodeId;
+            }
+        }
+    }
     return null;
 }
 document.addEventListener('DOMContentLoaded', function() {
