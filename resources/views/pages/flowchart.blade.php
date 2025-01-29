@@ -611,6 +611,6 @@
             }
         }
 
-        
+
     </script>
 @endsection
